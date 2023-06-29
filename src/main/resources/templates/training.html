@@ -30,12 +30,13 @@
                 </div>
             </th>
             <th>date</th>
-            <th>distance</th>
+            <th>distance(km)</th>
             <th>time</th>
             <th>speed</th>
             <th>speedForOneKm</th>
             <th>competition</th>
             <th>mountainCompetition</th>
+            <th>category</th>
 
             <th>
                 <div th:if="${isAscending}">
@@ -66,11 +67,12 @@
             </td>
             <td class="align-middle" th:text="${training.date}"></td>
             <td class="align-middle" th:text="${training.distance}"></td>
-            <td class="align-middle" th:text="${training.time}"></td>
+            <td class="align-middle" th:text="${training.timeDesc}"></td>
             <td class="align-middle" th:text="${training.speed}"></td>
             <td class="align-middle" th:text="${training.speedForOneKm}"></td>
             <td class="align-middle" th:text="${training.competition}"></td>
             <td class="align-middle" th:text="${training.mountainCompetition}"></td>
+            <td class="align-middle" th:text="${training.category}"></td>
             <td class="align-middle" th:text="${training.description}"></td>
             <td class="align-middle text-center form-inline">
                 <a th:href="'/training/delete/' + ${training.id}">&#9988;</a>

@@ -5,10 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Duration;
 
 @UtilityClass
 @Slf4j
 public class Conversions {
+
+    public  static String getTimeDesc(Duration duration) {
+        var s = duration.getSeconds();
+        return String.format("%d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
+    }
+
     public BigDecimal calculateSpeedKmPerH(int rowNum, double distanceKm, long timeInSec) {
         try {
             var distanceM = distanceKm * 1000;

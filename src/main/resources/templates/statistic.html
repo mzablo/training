@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<!--
+<div style="max-height:750px;overflow-y:scroll">-->
+    <div style="max-height:650px; overflow-x:scroll; overflow-y:scroll; width: 35%; float:left; height:50%; background:#eee; margin:5px">
+
+        <div class="form-group col-md-8 h2">
+            <label >Weekly </label>
+        </div>
+
+        <table class="table table-striped table-bordered ">
+            <tr>
+                <th>date</th>
+                <th>distance sum(km)</th>
+                <th>time sum</th>
+                <th>avg distance</th>
+                <th>avg time</th>
+                <th>avg speed</th>
+                <th>avg speedForOneKm</th>
+            </tr>
+            <tr th:if="${#lists.isEmpty(weeklyStatisticList)}">
+                <td class="text-center" colspan="7">No Records found. Add some...!</td>
+            </tr>
+
+
+
+            <tr th:each="statistic : ${weeklyStatisticList}">
+                <td class="align-middle" style="color:blue"  th:text="${statistic.date}"></td>
+                <td class="align-middle" th:text="${statistic.distanceSum}"></td>
+                <td class="align-middle" th:text="${statistic.timeDescSum}"></td>
+                <td class="align-middle" th:text="${statistic.avgDistance}"></td>
+                <td class="align-middle" th:text="${statistic.avgTimeDesc}"></td>
+                <td class="align-middle" th:text="${statistic.avgSpeed}"></td>
+                <td class="align-middle" th:text="${statistic.avgSpeedForOneKm}"></td>
+            </tr>
+        </table>
+
+    </div>
+
+
+    <div style="max-height:650px; overflow-x:scroll; overflow-y:scroll; width: 35%; float:left; height:50%; background:#eee; margin:5px">
+        <div class="form-group col-md-8 h2">
+            <label >Monthly </label>
+        </div>
+
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>date</th>
+                    <th>distance sum(km)</th>
+                    <th>time sum</th>
+                    <th>avg distance</th>
+                    <th>avg time</th>
+                    <th>avg speed</th>
+                    <th>avg speedForOneKm</th>
+                </tr>
+                <tr th:if="${#lists.isEmpty(monthlyStatisticList)}">
+                    <td class="text-center" colspan="7">No Records found. Add some...!</td>
+                </tr>
+
+                <tr th:each="statistic : ${monthlyStatisticList}">
+                    <td class="align-middle"  style="color:blue"  th:text="${statistic.date}"></td>
+                    <td class="align-middle" th:text="${statistic.distanceSum}"></td>
+                    <td class="align-middle" th:text="${statistic.timeDescSum}"></td>
+                    <td class="align-middle" th:text="${statistic.avgDistance}"></td>
+                    <td class="align-middle" th:text="${statistic.avgTimeDesc}"></td>
+                    <td class="align-middle" th:text="${statistic.avgSpeed}"></td>
+                    <td class="align-middle" th:text="${statistic.avgSpeedForOneKm}"></td>
+                </tr>
+            </table>
+        </div>
+
+    <div style="max-height:650px; overflow-x:scroll; overflow-y:scroll; width: 25%; float:left; background:#eee; margin:5px">
+        <div class="form-group col-md-8 h2">
+            <label >Yearly </label>
+        </div>
+
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th>date</th>
+                <th>distance sum(km)</th>
+                <th>time sum</th>
+                <th>avg distance</th>
+                <th>avg time</th>
+                <th>avg speed</th>
+                <th>avg speedForOneKm</th>
+            </tr>
+            <tr th:if="${#lists.isEmpty(yearlyStatisticList)}">
+                <td class="text-center" colspan="7">No Records found. Add some...!</td>
+            </tr>
+
+            <tr th:each="statistic : ${yearlyStatisticList}">
+                <td class="align-middle"  style="color:blue"  th:text="${statistic.date}"></td>
+                <td class="align-middle" th:text="${statistic.distanceSum}"></td>
+                <td class="align-middle" th:text="${statistic.timeDescSum}"></td>
+                <td class="align-middle" th:text="${statistic.avgDistance}"></td>
+                <td class="align-middle" th:text="${statistic.avgTimeDesc}"></td>
+                <td class="align-middle" th:text="${statistic.avgSpeed}"></td>
+                <td class="align-middle" th:text="${statistic.avgSpeedForOneKm}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

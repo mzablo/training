@@ -15,19 +15,17 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class LoadService {
+class LoadService implements LoadServiceFactory {
     private static final String FILE_PATH = "c:/gosia/bieganie.xlsx";
 
+    @Override
     @Cacheable(value = "trainings")
-    LoadResultDto load() {
+    public LoadResultDto load() {
         try (Workbook workbook = new XSSFWorkbook(new FileInputStream(FILE_PATH))) {
             Sheet sheet = workbook.getSheetAt(0);
             return new LoadResultDto(buildTrainingList(sheet));
@@ -37,7 +35,7 @@ public class LoadService {
         }
     }
 
-    @CacheEvict(value="trainings")
+    @CacheEvict(value = "trainings")
     public void evict() {
         log.debug("Evicting cache trainings.");
     }
@@ -55,6 +53,7 @@ public class LoadService {
                 //            }
             }
         }
+        result.sort(Comparator.comparing(TrainingDto::getDate).reversed());
         log.info("Loaded {} trainings.", result.size());
         return result;
     }
@@ -69,10 +68,12 @@ public class LoadService {
                 .date(getTrainingDate(row))
                 .distance(distance)
                 .time(time)
+                .timeDesc(Conversions.getTimeDesc(time))
                 .competition(getCompetition(row))
                 .mountainCompetition(getMountainCompetition(row))
                 .speed(Conversions.calculateSpeedKmPerH(row.getRowNum(), distance, time.getSeconds()))
                 .speedForOneKm(Conversions.calculateSpeedOneKm(row.getRowNum(), distance, time.getSeconds()))
+                .category(getCategory(row))
                 .description(getDescription(row))
                 .build();
     }
@@ -82,6 +83,15 @@ public class LoadService {
             return Optional.ofNullable(row.getCell(10)).map(Cell::getStringCellValue).orElse("");
         } catch (Exception e) {
             log.error("Problem getting description for row {} :{}", row.getRowNum(), e.getMessage());
+        }
+        return "";
+    }
+
+    private static String getCategory(Row row) {
+        try {
+            return Optional.ofNullable(row.getCell(7)).map(Cell::getStringCellValue).orElse("");
+        } catch (Exception e) {
+            log.error("Problem getting category for row {} :{}", row.getRowNum(), e.getMessage());
         }
         return "";
     }
