@@ -1,40 +1,23 @@
 <header th:fragment="header">
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-        <a class="navbar-brand" th:href="@{/utils}">
-            Utils
-        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="topNavbar">
             <ul class="navbar-nav">
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/income') ? 'active':''}">
-                    <a class="nav-link" th:href="@{/income}">Income</a>
+                <li th:classappend="${ #httpServletRequest !=null ? #httpServletRequest.getRequestURI().contains('/refresh-load'): false ? 'active':''}">
+                    <a class="nav-link" th:href="@{/refresh-load}">Load</a>
                 </li>
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/outcome') ? 'active':''}">
-                    <a class="nav-link" th:href="@{/outcome}">Outcome</a>
+                <li th:classappend="${ #httpServletRequest !=null ? #httpServletRequest.getRequestURI().contains('/training'): false ? 'active':''}">
+                  <a class="nav-link" th:href="@{/training}">Training</a>
                 </li>
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/account') ? 'active':''}">
-                <a class="nav-link" th:href="@{/account}">Account</a>
+                <li th:classappend="${ #httpServletRequest !=null ? #httpServletRequest.getRequestURI().contains('/chart'): false ? 'active':''}">
+                  <a class="nav-link" th:href="@{/chart}">Chart</a>
                 </li>
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/operation') ? 'active':''}">
-                    <a class="nav-link" th:href="@{/operation}">Operation</a>
+                <li th:classappend="${ #httpServletRequest !=null ? #httpServletRequest.getRequestURI().contains('/chart'): false ? 'active':''}">
+                    <a class="nav-link" th:href="@{/chart}">ChOutcome</a>
                 </li>
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/deposit') ? 'active':''}">
-                <a class="nav-link" th:href="@{/deposit}">Deposit</a>
-                </li>
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/health') ? 'active':''}">
-                <a class="nav-link" th:href="@{/health}">Health</a>
-                </li>
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/sql') ? 'active':''}">
-                <a class="nav-link" th:href="@{/sql}">Sql</a>
-                </li>
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/summary') ? 'active':''}">
-                <a class="nav-link" th:href="@{/summary}">Summary</a>
-                </li>
-                <li th:classappend="${#httpServletRequest.getRequestURI().contains('/char') ? 'active':''}">
-                <a class="nav-link" th:href="@{/chart}">Chart</a>
-                </li>
+
             </ul>
         </div>
         <a class="navbar-brand" th:href="@{/exit}">

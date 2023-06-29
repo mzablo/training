@@ -1,0 +1,6 @@
+logging:
+  level:
+    mza.my.training: DEBUG
+
+server:
+  port: 8081

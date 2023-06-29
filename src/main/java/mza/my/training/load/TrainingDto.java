@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 //float or double
 record TrainingDto(
+        long id,
         LocalDate date,
         double distance,
         Duration time,

@@ -7,15 +7,31 @@ import org.thymeleaf.util.StringUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class XlsxReader {
     public static void main(String[] args) {
         String filePath = "c:/gosia/bieganie.xlsx";
         // getGeneric(filePath);
-        getFormal(filePath);
+        //getFormal(filePath);
+        x();
+    }
+
+    private static void x() {
+        List<Integer> arr = List.of(123, 5465, 7876, 232, 667, 2);
+        var list = arr.stream().sorted().collect(Collectors.toList());
+        var sub = list.subList(list.size() - 4, list.size());
+        System.out.println(sub);
+        // BigInteger
+        Optional<Integer> res1 = sub.stream().reduce(Integer::sum);
+        BigInteger s = BigInteger.valueOf(res1.isPresent() ? res1.get() : 0);
+
     }
 
     private static void getFormal(String filePath) {
@@ -32,8 +48,8 @@ public class XlsxReader {
                             .time(time)
                             .competition(getCompetition(row))
                             .mountainCompetition(getMountainCompetition(row))
-                            .speed(Conversions.calculateSpeedKmPerH(distance, time.getSeconds()))
-                            .speedForOneKm(Conversions.calculateSpeedOneKm(distance, time.getSeconds()))
+                            .speed(Conversions.calculateSpeedKmPerH(row.getRowNum(), distance, time.getSeconds()))
+                            .speedForOneKm(Conversions.calculateSpeedOneKm(row.getRowNum(), distance, time.getSeconds()))
                             .description(getDescription(row))
                             .build();
                     System.out.print(t);
