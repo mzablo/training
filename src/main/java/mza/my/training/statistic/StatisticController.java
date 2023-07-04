@@ -15,10 +15,11 @@ public class StatisticController {
     private final StatisticsService statisticsService;
 
     @GetMapping("statistic")
-    String statistic(Model model) {
-        model.addAttribute("weeklyStatisticList", statisticsService.getWeeklyStatistics());
-        model.addAttribute("monthlyStatisticList", statisticsService.getMonthlyStatistics());
-        model.addAttribute("yearlyStatisticList", statisticsService.getYearlyStatistics());
+    String statistic(Model model,String sortingField, boolean ascending) {
+        model.addAttribute("isAscending", !ascending);
+        model.addAttribute("weeklyStatisticList", statisticsService.getWeeklyStatistics(sortingField, ascending));
+        model.addAttribute("monthlyStatisticList", statisticsService.getMonthlyStatistics(sortingField, ascending));
+        model.addAttribute("yearlyStatisticList", statisticsService.getYearlyStatistics(sortingField, ascending));
         return "statistic";
     }
 }

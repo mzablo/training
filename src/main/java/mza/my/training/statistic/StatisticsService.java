@@ -16,6 +16,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,21 +32,21 @@ public class StatisticsService {
 
     private final LoadServiceFactory loadServiceFactory;
 
-    public List<StatisticDto> getWeeklyStatistics() {
+    public List<StatisticDto> getWeeklyStatistics(String sortingField, boolean ascending) {
         var result = buildStatisticList(getTrainings(), "week");
-        result.sort(Comparator.comparing(StatisticDto::getDate).reversed());
+        result.sort(getSort(sortingField, ascending));
         return result;
     }
 
-    public List<StatisticDto> getMonthlyStatistics() {
+    public List<StatisticDto> getMonthlyStatistics(String sortingField, boolean ascending) {
         var result = buildStatisticList(getTrainings(), "month");
-        result.sort(Comparator.comparing(StatisticDto::getDate).reversed());
+        result.sort(getSort(sortingField, ascending));
         return result;
     }
 
-    public List<StatisticDto> getYearlyStatistics() {
+    public List<StatisticDto> getYearlyStatistics(String sortingField, boolean ascending) {
         var result = buildStatisticList(getTrainings(), "year");
-        result.sort(Comparator.comparing(StatisticDto::getDate).reversed());
+        result.sort(getSort(sortingField, ascending));
         return result;
     }
 
@@ -97,4 +98,45 @@ public class StatisticsService {
                 .map(TrainingDto::getDistance)
                 .reduce(0.0, Double::sum) / (trainings.size())).setScale(2, RoundingMode.HALF_UP);
     }
+
+
+    private Comparator<StatisticDto> getDefaultSort() {
+        return Comparator.comparing(StatisticDto::getDate).reversed();
+    }
+
+    private Comparator<StatisticDto> getSort(String sortingField, boolean ascending) {
+        if (ascending && Objects.equals("distanceSum", sortingField)) {
+            return Comparator.comparing(StatisticDto::distanceSum);
+        } else if (!ascending && Objects.equals("distanceSum", sortingField)) {
+            return Comparator.comparing(StatisticDto::distanceSum).reversed();
+
+        } else if (ascending && Objects.equals("timeSum", sortingField)) {
+            return Comparator.comparing(StatisticDto::timeSum);
+        } else if (!ascending && Objects.equals("timeSum", sortingField)) {
+            return Comparator.comparing(StatisticDto::timeSum).reversed();
+
+        } else if (ascending && Objects.equals("avgDistance", sortingField)) {
+            return Comparator.comparing(StatisticDto::avgDistance);
+        } else if (!ascending && Objects.equals("avgDistance", sortingField)) {
+            return Comparator.comparing(StatisticDto::avgDistance).reversed();
+
+        } else if (ascending && Objects.equals("avgTime", sortingField)) {
+            return Comparator.comparing(StatisticDto::avgTime);
+        } else if (!ascending && Objects.equals("avgTime", sortingField)) {
+            return Comparator.comparing(StatisticDto::avgTime).reversed();
+
+        } else if (ascending && Objects.equals("avgSpeed", sortingField)) {
+            return Comparator.comparing(StatisticDto::avgSpeed);
+        } else if (!ascending && Objects.equals("avgSpeed", sortingField)) {
+            return Comparator.comparing(StatisticDto::avgSpeed).reversed();
+
+        } else if (ascending && Objects.equals("avgSpeedForOneKm", sortingField)) {
+            return Comparator.comparing(StatisticDto::avgSpeedForOneKm);
+        } else if (!ascending && Objects.equals("avgSpeedForOneKm", sortingField)) {
+            return Comparator.comparing(StatisticDto::avgSpeedForOneKm).reversed();
+
+        }
+        return getDefaultSort();
+    }
+
 }

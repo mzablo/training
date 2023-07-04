@@ -7,7 +7,7 @@
     <script type="text/javascript" th:src="@{/actions.js}"></script>
 </head>
 <body>
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <h1>Fixed Table Header Demo: Page Level</h1>
 <button type="button" th:onclick="showAlert()">Show Alert</button>
