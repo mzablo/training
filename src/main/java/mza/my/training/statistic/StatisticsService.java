@@ -32,21 +32,25 @@ public class StatisticsService {
     private final LoadServiceFactory loadServiceFactory;
 
     public List<StatisticDto> getWeeklyStatistics() {
-        var result = buildStatisticList(loadServiceFactory.load().trainings(), "week");
+        var result = buildStatisticList(getTrainings(), "week");
         result.sort(Comparator.comparing(StatisticDto::getDate).reversed());
         return result;
     }
 
     public List<StatisticDto> getMonthlyStatistics() {
-        var result = buildStatisticList(loadServiceFactory.load().trainings(), "month");
+        var result = buildStatisticList(getTrainings(), "month");
         result.sort(Comparator.comparing(StatisticDto::getDate).reversed());
         return result;
     }
 
     public List<StatisticDto> getYearlyStatistics() {
-        var result = buildStatisticList(loadServiceFactory.load().trainings(), "year");
+        var result = buildStatisticList(getTrainings(), "year");
         result.sort(Comparator.comparing(StatisticDto::getDate).reversed());
         return result;
+    }
+
+    private List<TrainingDto> getTrainings() {
+        return loadServiceFactory.load(null, null, false).trainings();
     }
 
     private List<StatisticDto> buildStatisticList(List<TrainingDto> trainings, String adjuster) {
