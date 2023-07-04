@@ -1,18 +1,18 @@
 package mza.my.training.load;
 
+import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import mza.my.training.util.Conversions;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -24,19 +24,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class LoadService implements LoadServiceFactory {
     private static final String FILE_PATH = "c:/gosia/bieganie.xlsx";
-    private final CacheManager cacheManager;
 
     @Override
+    @SneakyThrows
     @Cacheable(value = "trainings")
     public LoadResultDto load(TrainingFilters trainingFilters, String sortingField, boolean ascending) {
-        log.debug("sortingField: {}:{}, trainingFilters: {}", sortingField, ascending, trainingFilters);
-        try (Workbook workbook = new XSSFWorkbook(new FileInputStream(FILE_PATH))) {
-            Sheet sheet = workbook.getSheetAt(0);
-            return new LoadResultDto(getTrainingListWithFiltersAndSorting(sortingField, ascending, trainingFilters, buildTrainingList(sheet)));
-        } catch (IOException e) {
-            log.error("Error loading file " + FILE_PATH + e.getMessage());
-            return null;
-        }
+        //log.debug("sortingField: {}:{}, trainingFilters: {}", sortingField, ascending, trainingFilters);
+        @Cleanup Workbook workbook = new XSSFWorkbook(new FileInputStream(FILE_PATH));
+        Sheet sheet = workbook.getSheetAt(0);
+        return new LoadResultDto(getTrainingListWithFiltersAndSorting(sortingField, ascending, trainingFilters, buildTrainingList(sheet)));
     }
 
     @CacheEvict(value = "trainings")
